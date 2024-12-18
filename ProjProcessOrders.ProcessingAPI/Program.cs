@@ -1,8 +1,11 @@
+using AspNetCore.SwaggerUI.Themes;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using ProjProcessOrders.Application.Services;
 using ProjProcessOrders.Composition;
+using ProjProcessOrders.Infrastructure.Context;
 using ProjProcessOrders.Localization.Localizations;
-using ProjProcessOrders.ProcessingAPI.Infrastructure.Messaging;
+using ProjProcessOrders.Messaging;
 using ProjProcessOrders.UseCase.UseCases.CreateClient;
 using Serilog;
 
@@ -34,18 +37,21 @@ builder.Services.ConfigureApplicantionApp();
 
 builder.Services.AddInfrastructureServices(builder.Configuration);
 
+await Task.Delay(TimeSpan.FromSeconds(15));
+
 builder.Services.AddSingleton<RabbitMqConfig>(sp =>
 {
     var configuration = sp.GetRequiredService<IConfiguration>();
 
     string hostName = configuration["RabbitMqSettings:HostName"];
-    string queueName = configuration["RabbitMqSettings:QueueName"];
+    string requestQueueName = configuration["RabbitMqSettings:RequestQueueName"];
+
     int port = int.TryParse(configuration["RabbitMqSettings:Port"], out var parsedPort) ? parsedPort : 5672;
 
-    return new RabbitMqConfig(hostName, queueName, port);
+    return new RabbitMqConfig(hostName, requestQueueName, port);
 });
 
-builder.Services.AddHostedService<RabbitMqConsumerService>();
+builder.Services.AddHostedService<RabbitMqServerService>();
 
 builder.Services.AddSingleton(serviceProvider =>
 {
@@ -66,9 +72,9 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
-{
+{ 
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(Style.Dark);
 }
 
 app.UseSerilogRequestLogging();
@@ -80,5 +86,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+    dbContext.Database.Migrate(); 
+}
 
 app.Run();
