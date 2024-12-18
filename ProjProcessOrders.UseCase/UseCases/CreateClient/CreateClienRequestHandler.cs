@@ -30,7 +30,7 @@ namespace ProjProcessOrders.UseCase.UseCases.CreateClient
                 throw new ConflictException(_resources.NameAlreadyExists());
 
             var newClient = _mapper.Map<Client>(request);
-            var res = await _clientRepository.Insert(newClient, cancellationToken);
+            var res = await _clientRepository.InsertAsync(newClient, cancellationToken);
 
             var createClientResponse = new CreateClientResponse();
             createClientResponse.Id = res.Id;

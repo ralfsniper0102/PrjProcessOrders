@@ -30,7 +30,7 @@ namespace ProjProcessOrders.UseCase.UseCases.CreateProduct
                 throw new ConflictException(_resources.NameAlreadyExists());
 
             var newProduct = _mapper.Map<Product>(request);
-            var res = await _productRepository.Insert(newProduct, cancellationToken);
+            var res = await _productRepository.InsertAsync(newProduct, cancellationToken);
 
             var createProductResponse = new CreateProductResponse();
             createProductResponse.Id = res.Id;

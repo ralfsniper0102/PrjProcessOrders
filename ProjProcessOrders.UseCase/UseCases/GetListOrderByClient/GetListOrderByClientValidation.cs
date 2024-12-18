@@ -1,9 +1,4 @@
 ﻿using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjProcessOrders.UseCase.UseCases.GetListOrderByClient
 {
@@ -12,7 +7,9 @@ namespace ProjProcessOrders.UseCase.UseCases.GetListOrderByClient
         public GetListOrderByClientValidation()
         {
             RuleFor(x => x.ClientId)
-                .NotEmpty();
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .GreaterThan(0);
         }
     }
 }

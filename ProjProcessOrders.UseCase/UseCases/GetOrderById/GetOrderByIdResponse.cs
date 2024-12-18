@@ -1,4 +1,4 @@
-﻿namespace ProjProcessOrders.UseCase.UseCases.GetOrder
+﻿namespace ProjProcessOrders.UseCase.UseCases.GetOrderById
 {
     public class GetOrderByIdResponse
     {

@@ -7,6 +7,7 @@ namespace ProjProcessOrders.UseCase.UseCases.CreateClient
         public CreateClientValidator()
         {
             RuleFor(x => x.Name)
+                .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .MinimumLength(3);
         }

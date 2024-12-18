@@ -1,11 +1,14 @@
 ﻿using FluentValidation;
 
-namespace ProjProcessOrders.UseCase.UseCases.CreateProduct
+namespace ProjProcessOrders.UseCase.UseCases.UpdateProduct
 {
-    public class CreateProductRequestValidator : AbstractValidator<CreateProductRequest>
+    public class UpdateProductValidation : AbstractValidator<UpdateProductRequest>
     {
-        public CreateProductRequestValidator()
+        public UpdateProductValidation()
         {
+            RuleFor(x => x.ProductId)
+                .NotEmpty();
+
             RuleFor(x => x.ProductName)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
@@ -13,6 +16,7 @@ namespace ProjProcessOrders.UseCase.UseCases.CreateProduct
 
             RuleFor(x => x.ProductPrice)
                 .Cascade(CascadeMode.Stop)
+                .NotEmpty()
                 .GreaterThan(0);
         }
     }

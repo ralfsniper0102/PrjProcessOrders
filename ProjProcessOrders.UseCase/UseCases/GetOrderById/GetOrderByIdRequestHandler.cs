@@ -6,7 +6,7 @@ using ProjProcessOrders.Exception.Exceptions;
 using ProjProcessOrders.Localization.Localizations;
 using ProjProcessOrders.UseCase.Interfaces;
 
-namespace ProjProcessOrders.UseCase.UseCases.GetOrder
+namespace ProjProcessOrders.UseCase.UseCases.GetOrderById
 {
     public class GetOrderByIdRequestHandler : IRequestHandler<GetOrderByIdRequest, GetOrderByIdResponse>
     {

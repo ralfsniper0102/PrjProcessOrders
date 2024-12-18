@@ -7,7 +7,9 @@ namespace ProjProcessOrders.UseCase.UseCases.GetOrderValue
         public GetOrderValueValidation()
         {
             RuleFor(x => x.OrderId)
-                .NotEmpty();
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .GreaterThan(0);
         }
     }
 }

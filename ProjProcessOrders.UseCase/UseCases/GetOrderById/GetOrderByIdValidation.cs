@@ -1,13 +1,15 @@
 ﻿using FluentValidation;
 
-namespace ProjProcessOrders.UseCase.UseCases.GetOrder
+namespace ProjProcessOrders.UseCase.UseCases.GetOrderById
 {
     public class GetOrderByIdValidation : AbstractValidator<GetOrderByIdRequest>
     {
         public GetOrderByIdValidation()
         {
             RuleFor(x => x.OrderId)
-                .NotEmpty();
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .GreaterThan(0);
         }
     }
 }

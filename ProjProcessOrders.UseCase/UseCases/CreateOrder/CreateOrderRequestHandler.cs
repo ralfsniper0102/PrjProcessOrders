@@ -58,7 +58,7 @@ namespace ProjProcessOrders.UseCase.UseCases.CreateOrder
                 }).ToList()
             };
 
-            var createdOrder = await _orderRepository.Insert(newOrder, cancellationToken);
+            var createdOrder = await _orderRepository.InsertAsync(newOrder, cancellationToken);
 
             return new CreateOrderResponse { Id = createdOrder.Id };
         }

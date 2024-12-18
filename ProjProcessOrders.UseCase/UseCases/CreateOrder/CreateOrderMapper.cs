@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProjProcessOrders.Domain.Entities;
+using ProjProcessOrders.UseCase.DTO;
 
 namespace ProjProcessOrders.UseCase.UseCases.CreateOrder
 {
@@ -16,7 +17,7 @@ namespace ProjProcessOrders.UseCase.UseCases.CreateOrder
                     })
                 ));
 
-            CreateMap<OrderProductViewModel, OrderProduct>();
+            CreateMap<OrderProductDTO, OrderProduct>();
         }
     }
 }

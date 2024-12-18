@@ -7,7 +7,9 @@ namespace ProjProcessOrders.UseCase.UseCases.GetQtOrderByClient
         public GetQtOrderByClientValidation()
         {
             RuleFor(x => x.ClientId)
-                .NotEmpty();
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .GreaterThan(0);
         }
     }
 }

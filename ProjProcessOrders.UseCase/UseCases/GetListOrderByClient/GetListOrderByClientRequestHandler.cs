@@ -77,7 +77,7 @@ namespace ProjProcessOrders.UseCase.UseCases.GetListOrderByClient
                 Page = page,
                 PageSize = pageSize,
                 QtTotal = qt,
-                QtPages = Math.Max(qtPages, 1),
+                QtPages = Math.Max(qtPages, 1)
             };
         }
     }

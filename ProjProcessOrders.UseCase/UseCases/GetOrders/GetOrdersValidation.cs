@@ -1,6 +1,11 @@
-﻿namespace ProjProcessOrders.UseCase.UseCases.GetOrders
+﻿using FluentValidation;
+
+namespace ProjProcessOrders.UseCase.UseCases.GetOrders
 {
-    internal class GetOrdersValidation
+    public  class GetOrdersValidation : AbstractValidator<GetOrdersRequest>
     {
+        public GetOrdersValidation()
+        {
+        }
     }
 }
