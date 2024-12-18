@@ -1,4 +1,5 @@
-using ProjProcessOrders.WebAPI.Infrastructure.Messaging;
+using AspNetCore.SwaggerUI.Themes;
+using ProjProcessOrders.Messaging;
 using ProjProcessOrders.WebAPI.Middleware;
 using Serilog;
 
@@ -23,7 +24,25 @@ Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()
                 .CreateLogger();
 
-builder.Services.AddRabbitMq(builder.Configuration);
+builder.Services.AddScoped<RabbitMqClientService>();
+
+builder.Services.AddSingleton<RabbitMqConfig>(sp =>
+{
+    var configuration = sp.GetRequiredService<IConfiguration>();
+
+    string hostName = configuration["RabbitMqSettings:HostName"];
+    string requestQueueName = configuration["RabbitMqSettings:RequestQueueName"];
+    
+    int port = int.TryParse(configuration["RabbitMqSettings:Port"], out var parsedPort) ? parsedPort : 5672;
+
+    return new RabbitMqConfig(hostName, requestQueueName, port);
+});
+
+builder.Services.AddSingleton(serviceProvider =>
+{
+    var rabbitMqConfig = serviceProvider.GetRequiredService<RabbitMqConfig>();
+    return rabbitMqConfig.GetChannel();
+});
 
 builder.Host.UseSerilog();
 
@@ -39,7 +58,7 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(Style.Dark);
 }
 
 app.UseMiddleware<CorrelationIdMiddleware>();

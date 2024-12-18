@@ -1,17 +1,77 @@
-# PrjProcessOrders
- 
+Processing - Docker
 
-#Comandos de migração e criação do banco de dados do projeto
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "RabbitMqSettings": {
+        "HostName": "${RabbitMqSettings__HostName}",
+        "Port": "${RabbitMqSettings__Port}",
+        "RequestQueueName": "${RabbitMqSettings__RequestQueueName}",
+        "ResponseQueueName": "${RabbitMqSettings__ResponseQueueName}",
+    },
+    "ConnectionStrings": {
+        "ConnStr": "${ConnectionStrings__ConnStr}"
+    }
+}
+
+Processing
+
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "RabbitMqSettings": {
+        "HostName": "localhost",
+        "Port": 5672,
+        "RequestQueueName": "request_queue",
+        "ResponseQueueName": "response_queue"
+    },
+    "ConnectionStrings": {
+        "ConnStr": "Host=127.0.0.1;Port=5432;Database=Orders_DB;User ID=postgres;Password=123456aA;"
+    }
+}
 
 
-dotnet ef migrations add InitialMigration --project ProjProcessOrders.Infrastructure --startup-project ProjProcessOrders.ProcessingAPI --context ApplicationDbContext
 
 
-dotnet ef database update --project ProjProcessOrders.Infrastructure --startup-project ProjProcessOrders.ProcessingAPI --context ApplicationDbContext
+
+webApi - Docker
+
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "RabbitMqSettings": {
+       "HostName": "${RabbitMqSettings__HostName}",
+        "Port": "${RabbitMqSettings__Port}",
+        "RequestQueueName": "${RabbitMqSettings__RequestQueueName}",
+        "ResponseQueueName": "${RabbitMqSettings__ResponseQueueName}"
+    }
+}
 
 
-#Configurações RabbitMQ
+{
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "RabbitMqSettings": {
+        "HostName": "localhost",
+        "Port": 5672,
+        "RequestQueueName": "request_queue",
+        "ResponseQueueName": "response_queue"
+    }
+}
 
-Virtual host = hostname
-Nome = processing_queue
-Type = classic
