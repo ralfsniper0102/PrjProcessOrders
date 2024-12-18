@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ClientAlreadyExists" xml:space="preserve">
+    <value>Cliente existente.</value>
+  </data>
   <data name="ClientNotExists" xml:space="preserve">
     <value>Cliente não existente.</value>
   </data>
@@ -199,10 +202,16 @@
     <value>O nome já existe no banco de dados.</value>
   </data>
   <data name="OrderNotExists" xml:space="preserve">
-    <value>Pedido não existe</value>
+    <value>Pedido não existente.</value>
   </data>
   <data name="OrdersNotExists" xml:space="preserve">
-    <value>Pedido não existente.</value>
+    <value>Pedidos não existentes.</value>
+  </data>
+  <data name="ProductHasOrders" xml:space="preserve">
+    <value>O produto possuí pedidos em aberto.</value>
+  </data>
+  <data name="ProductNotExists" xml:space="preserve">
+    <value>Produto não existente.</value>
   </data>
   <data name="ProductNotRegistered" xml:space="preserve">
     <value>Produto não registrado.</value>
@@ -212,5 +221,8 @@
   </data>
   <data name="RoleAlreadyExists" xml:space="preserve">
     <value>A role já existe.</value>
+  </data>
+  <data name="DuplicateProduct" xml:space="preserve">
+    <value>ProductId duplicado.</value>
   </data>
 </root>
