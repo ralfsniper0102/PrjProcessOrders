@@ -1,0 +1,71 @@
+services:
+    processing_api:
+        build:
+            context: .
+            dockerfile: ProjProcessOrders.ProcessingAPI/Dockerfile
+        ports:
+            - "5000:8080"
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            ConnectionStrings__ConnStr: "Host=postgres;Port=5432;Database=Orders_DB;User ID=postgres;Password=123456aA;"
+            RabbitMqSettings__HostName: "rabbitmq"
+            RabbitMqSettings__Port: "5672"
+            RabbitMqSettings__RequestQueueName: "request_queue"
+            RabbitMqSettings__ResponseQueueName: "response_queue"
+        depends_on:
+            - postgres
+            - rabbitmq
+
+    web_api:
+        build:
+            context: .
+            dockerfile: ProjProcessOrders.WebAPI/Dockerfile
+        ports:
+            - "5001:8080"
+        environment:
+            ASPNETCORE_ENVIRONMENT: Development
+            ConnectionStrings__ConnStr: "Host=postgres;Port=5432;Database=Orders_DB;User ID=postgres;Password=123456aA;"
+            RabbitMqSettings__HostName: "rabbitmq"
+            RabbitMqSettings__Port: "5672"
+            RabbitMqSettings__RequestQueueName: "request_queue"
+            RabbitMqSettings__ResponseQueueName: "response_queue"
+        depends_on:
+            - postgres
+            - rabbitmq
+
+    postgres:
+        image: postgres:latest
+        environment:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: 123456aA
+          POSTGRES_DB: Orders_DB
+        ports:
+          - "5432:5432"
+        volumes:
+            - "postgres_proj_process_orders:/var/lib/postgresql/data"
+        deploy:
+          resources:
+            limits:
+              memory: 1G    
+              cpus: "1.0"
+            reservations:
+              memory: 512M  
+
+    rabbitmq:
+        image: rabbitmq:3-management
+        environment:
+          RABBITMQ_DEFAULT_USER: guest
+          RABBITMQ_DEFAULT_PASS: guest
+        ports:
+          - "5672:5672" 
+          - "15672:15672"
+        deploy:
+          resources:
+            limits:
+              memory: 512M
+              cpus: "0.5" 
+            reservations:
+              memory: 256M
+
+volumes:
+    postgres_proj_process_orders: {}
