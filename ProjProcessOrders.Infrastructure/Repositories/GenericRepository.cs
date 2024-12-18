@@ -21,7 +21,7 @@ namespace ProjProcessOrders.Infrastructure.Repositories
             _dbSet = _dbContext.Set<TEntity>();
         }
 
-        public async Task<TEntity> Update(TEntity obj, CancellationToken cancellationToken = default)
+        public async Task<TEntity> UpdateAsync(TEntity obj, CancellationToken cancellationToken = default)
         {
             _dbContext.Entry(obj).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -43,7 +43,7 @@ namespace ProjProcessOrders.Infrastructure.Repositories
             return query;
         }
 
-        public async Task<TEntity> Insert(TEntity obj, CancellationToken cancellationToken = default)
+        public async Task<TEntity> InsertAsync(TEntity obj, CancellationToken cancellationToken = default)
         {
             _dbSet.Add(obj);
             await _dbContext.SaveChangesAsync(cancellationToken);
@@ -52,6 +52,13 @@ namespace ProjProcessOrders.Infrastructure.Repositories
 
         public async Task SaveChangesAsync(CancellationToken cancellationToken = default)
         {
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task DeleteAsync(TEntity obj, CancellationToken cancellationToken = default)
+        {
+            
+            _dbSet.Remove(obj);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
