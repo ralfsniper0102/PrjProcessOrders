@@ -48,14 +48,15 @@ O projeto é dividido nas seguintes camadas, seguindo os princípios da Clean Ar
   
 - **WebAPI**: A camada de API, responsável por expor os endpoints RESTful do sistema. Depende de **ProcessAPI** (com referências para **Application**, **Composition**, **Exception** e **Messaging**) e **WebAPI** (com referências para **Messaging** e **UseCase**).
 
-## Configurações de Ambiente 🛠️
+
+## 1. Configurações de Ambiente 🛠️
 
 O projeto utiliza arquivos `appsettings.json` para configurar os diferentes ambientes de execução. As configurações para cada serviço estão descritas abaixo:
+
 
 ### ProcessingAPI 🛠️
 
 #### Configuração Local 🖥️
-
 Arquivo: `\ProjProcessOrders.ProcessingAPI\appsettings.json`
 
 ```json
@@ -78,29 +79,7 @@ Arquivo: `\ProjProcessOrders.ProcessingAPI\appsettings.json`
 } 
 ```
 
-Arquivo: `\ProjProcessOrders.WebAPI\appsettings.json`
-
-```json
-{
-  "Logging": {
-    "LogLevel": {
-      "Default": "Information",
-      "Microsoft.AspNetCore": "Warning"
-    }
-  },
-  "RabbitMqSettings": {
-    "HostName": "localhost",
-    "Port": 5672,
-    "RequestQueueName": "request_queue",
-    "ResponseQueueName": "response_queue"
-  }
-}
-```
-
-
-
-#### Configuração Docker
-
+#### Configuração Docker 🐳
 **Arquivo:** `\ProjProcessOrders.ProcessingAPI\appsettings.json`
 
 ```json
@@ -123,7 +102,30 @@ Arquivo: `\ProjProcessOrders.WebAPI\appsettings.json`
 }
 ```
 
+### WebAPI 🛠️
 
+#### Configuração Local 🖥️
+Arquivo: `\ProjProcessOrders.WebAPI\appsettings.json`
+
+```json
+{
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "RabbitMqSettings": {
+    "HostName": "localhost",
+    "Port": 5672,
+    "RequestQueueName": "request_queue",
+    "ResponseQueueName": "response_queue"
+  }
+}
+```
+
+
+#### Configuração Docker 🐳
 **Arquivo:** `\ProjProcessOrders.WebAPI\appsettings.json`
 
 ```json
@@ -142,6 +144,72 @@ Arquivo: `\ProjProcessOrders.WebAPI\appsettings.json`
   }
 }
 ```
+
+## 2. Instalação e Execução 🖥️
+
+Para rodar o projeto localmente ou via Docker, siga os passos abaixo:
+
+## 3. Requisitos
+- **.NET 8 SDK** - Baixe e instale a versão mais recente do .NET 8 SDK.
+- **Docker** - Instale o Docker para rodar os containers.
+- **PostgreSQL** - O banco de dados PostgreSQL precisa estar rodando na máquina local ou em um container Docker.
+
+## 4. Rodando o Projeto Localmente
+
+1. Clone o repositório:
+   ```bash
+   git clone https://github.com/ralfsniper0102/PrjProcessOrders.git
+   ```
+2. Navegue até o diretório do projeto:
+   ```bash
+   cd ProjProcessOrders
+   ```
+3. Restaure as dependências:
+   ```bash
+   dotnet restore
+   ```
+4. Execute o projeto:
+   ```bash
+   dotnet run
+   ```
+
+## 5. Rodando via Docker
+
+Para rodar o projeto com Docker, execute o comando abaixo:
+```bash
+docker-compose up
+```
+
+
+## 6. Arquitetura e Fluxo de Dados 📊
+
+O sistema segue os princípios da **Clean Architecture** para separar as responsabilidades e promover a escalabilidade. A comunicação entre os serviços é feita via RabbitMQ, usando o padrão **RPC (Remote Procedure Call)**.
+
+O fluxo básico de um pedido pode ser descrito da seguinte forma:
+
+1. O cliente faz uma requisição via **WebAPI** para cadastrar um novo pedido.
+2. A **WebAPI** envia uma mensagem para o RabbitMQ, colocando o pedido na **RequestQueue**.
+3. A **ProcessingAPI** consome a mensagem da fila, processa o pedido e armazena as informações no banco de dados usando **Entity Framework**.
+4. Após o processamento, uma resposta é enviada para a **ResponseQueue** do RabbitMQ.
+5. A **WebAPI** recebe a resposta e retorna ao cliente.
+
+## 6. Testes Automatizados 🧪
+
+O sistema possui testes automatizados para garantir a qualidade do código. Eles estão localizados na pasta **Test**.
+
+Para rodar os testes:
+
+1. Certifique-se de que todas as dependências estão restauradas:
+   ```bash
+   dotnet restore
+   ```
+
+2. Execute os testes:
+   ```bash
+   dotnet test
+   ```
+
+Os testes utilizam o **xUnit** para garantir o funcionamento correto dos casos de uso e da comunicação entre os serviços.
 
 
 
